@@ -14,14 +14,25 @@ byte heart[8] = {
 
 byte x[8] = {
   B00000000,
-  B01000010,
-  B00100100,
-  B00011000,
-  B00100100,
-  B01000010,
   B00000000,
+  B01000100,
+  B00101000,
+  B00010000,
+  B00101000,
+  B01000100,
   B00000000
 };
+
+// byte b[8] = {
+//   B00000000,
+//   B01111100,
+//   B01000010,
+//   B01111100,
+//   B01000010,
+//   B01111100,
+//   B00000000,
+//   B00000000
+// };
 
 void setup() {
   /*
@@ -41,6 +52,7 @@ void loop() {
   displayRow();
   displayPic(heart);
   displayPic(x);
+  // displayPic(b);
 }
 
 void displayDot() {
@@ -81,29 +93,31 @@ void displayPic(byte pic[8]) {
   delay(100);
 
   // Number of times to move the image down
-  int numMoves = 16; // 8 for the image onto the screen, 8 more to go off
+ int numMoves = 8; // 8 for the image onto the screen, 8 more to go off
 
   // Loop to move the image down
-  for (int move = 0; move < numMoves; move++) {
-    int temp = move % 8;
-    // Moving image onto the screen
-    if (move < 8) {
-      for (int j = 0; j < move; j++) {
-        lc.setColumn(0, j, pic[7 - temp]);
-        temp--;
-      }
-      delay(100);
-    } // Moving image off the screen
-    else if (move > 8) {
-      int pos = temp;
-      for (int j = 7; j > temp; j--) {
-        lc.setColumn(0, j, pic[7 - pos]);
-        pos++;
-      }
-      delay(100);
+  // Moving image onto the screen
+  for (int moveOn = 0; moveOn < numMoves; moveOn++) {
+    int tempOn = moveOn;
+    // if (move < 8) {
+    for (int j = 0; j < moveOn; j++) {
+      lc.setColumn(0, j, pic[7 - tempOn]);
+      tempOn--;
     }
-    
-    lc.clearDisplay(0); // Clear the display after each shift
+    delay(100);
+    lc.clearDisplay(0);
+  } 
+  // Moving image off the screen
+  for (int moveOff = 1; moveOff < numMoves; moveOff++) {
+    int tempOff = moveOff;
+    for (int j = 7; j > moveOff; j--) {
+      lc.setColumn(0, j, pic[7 - tempOff]);
+      tempOff++;
+    }
+    delay(100);
+    lc.clearDisplay(0);
   }
   delay(10);
 }
+
+
