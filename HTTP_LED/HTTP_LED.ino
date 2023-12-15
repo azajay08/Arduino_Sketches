@@ -26,6 +26,7 @@ void setup() {
   Serial.println(WiFi.localIP());
 
   server.on("/led", HTTP_GET, handleLED);
+  server.on("/led/status", HTTP_GET, handleLEDStatus);
   server.begin();
 }
 
@@ -47,6 +48,14 @@ void handleLED() {
     }
   } else {
     server.send(400, "text/plain", "No command provided");
+  }
+}
+
+void handleLEDStatus() {
+  if (digitalRead(ledPin) == HIGH) {
+    server.send(200, "text/plain", "on");
+  } else {
+    server.send(200, "text/plain", "off");
   }
 }
 
